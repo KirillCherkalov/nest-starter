@@ -2,8 +2,17 @@
   "name": "nest-starter",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Effective Soft Team",
   "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter"
+  },
+  "engines": {
+    "node": ">=12.13.0",
+    "yarn": "~1.19.0"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -35,7 +44,9 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/supertest": "^2.0.8",
+    "husky": "^3.0.9",
     "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
@@ -44,6 +55,19 @@
     "tsconfig-paths": "^3.9.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
+  },
+  "lint-staged": {
+    "!(*test).ts": [
+      "tsc --noEmit",
+      "yarn run lint",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "moduleFileExtensions": [

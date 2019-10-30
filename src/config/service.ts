@@ -14,15 +14,17 @@ export class ConfigService {
 
   private validate(envConfig: EnvConfig): EnvConfig {
     const ENV_SCHEMA = Joi.object({
-      NODE_ENV: Joi.string().valid('development', 'staging', 'production').default('development'),
+      NODE_ENV: Joi.string()
+        .valid('development', 'staging', 'production')
+        .default('development'),
     });
 
-    const { error, value: validatedEnvConfig  } = ENV_SCHEMA.validate(envConfig);
+    const { error, value: validatedEnvConfig } = ENV_SCHEMA.validate(envConfig);
 
     if (error) {
       throw new Error(`Config validation error: ${error.message}`);
     }
 
-    return validatedEnvConfig ;
+    return validatedEnvConfig;
   }
 }
