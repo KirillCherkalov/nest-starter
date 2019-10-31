@@ -10,7 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/NODE_ENV')
+  @Get('NODE_ENV')
   getNodeEnv(): string {
     return this.appService.getNodeEnv();
   }
