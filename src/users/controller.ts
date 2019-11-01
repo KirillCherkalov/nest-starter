@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Put, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+} from '@nestjs/common';
 
+import { CreateUserDto } from './dto/create';
 @Controller('users')
 export class UsersController {
   @Post()
-  create(): string {
+  create(@Body() createUserDto: CreateUserDto): string {
     return 'create';
   }
 
@@ -18,8 +27,8 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string) {
-    return `update ${id}`;
+  update(@Param('id') id: string, @Body() body) {
+    return body;
   }
 
   @Delete(':id')
