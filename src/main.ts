@@ -1,4 +1,4 @@
-import * as helmet from 'helmet';
+import helmet from 'helmet';
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
