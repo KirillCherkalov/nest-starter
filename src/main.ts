@@ -1,8 +1,8 @@
 import helmet from 'helmet';
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
+import { ValidationPipe } from './common/pipes/validation';
 import { AllExceptionsFilter } from './common/filters/exception';
 
 async function bootstrap() {
