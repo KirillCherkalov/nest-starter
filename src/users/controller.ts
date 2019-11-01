@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create';
+
 @Controller('users')
 export class UsersController {
   @Post()
