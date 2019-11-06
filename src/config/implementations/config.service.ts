@@ -14,7 +14,27 @@ export class ConfigService implements IConfigService {
     this.config = this.configDetector.getConfig();
   }
 
-  public getNodeEnv(): string {
+  get NODE_ENV(): string {
     return this.config.NODE_ENV;
+  }
+
+  get DB_HOST(): string {
+    return this.config.DB_HOST;
+  }
+
+  get DB_PORT(): number {
+    return this.config.DB_PORT;
+  }
+
+  get DB_NAME(): string {
+    return this.config.DB_NAME;
+  }
+
+  get DB_USER(): string {
+    return this.config.DB_USER;
+  }
+
+  get DB_PASSWORD(): string {
+    return this.config.DB_PASSWORD;
   }
 }
