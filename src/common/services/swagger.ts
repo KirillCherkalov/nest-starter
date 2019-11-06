@@ -14,7 +14,6 @@ export class Swagger {
       .setDescription('{Project name} API description')
       .setVersion('1.0')
       .setBasePath('/api/v1')
-      .addTag('api')
       .build();
 
     const document = SwaggerModule.createDocument(this.app, options);
