@@ -7,6 +7,7 @@ import { AllExceptionsFilter } from './common/filters/exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('/api/v1');
   app.enableCors();
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
