@@ -13,6 +13,9 @@ const schema = Joi.object({
   DB_NAME: Joi.string().required(),
   DB_USER: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
+  APP_PORT: Joi.number()
+    .integer()
+    .required(),
 });
 
 export class JoiValidator implements IValidator {

@@ -5,4 +5,5 @@ export interface IConfig {
   DB_NAME: string;
   DB_USER: string;
   DB_PASSWORD: string;
+  APP_PORT: number;
 }

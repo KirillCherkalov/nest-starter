@@ -37,4 +37,8 @@ export class ConfigService implements IConfigService {
   get DB_PASSWORD(): string {
     return this.config.DB_PASSWORD;
   }
+
+  get APP_PORT(): number {
+    return this.config.APP_PORT;
+  }
 }
