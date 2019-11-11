@@ -28,7 +28,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:create": "typeorm migration:create --config ./db/migration.config.js -n",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js --config ./db/migration.config.js migration:run",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js --config ./db/migration.config.js migration:revert"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.7",
@@ -40,6 +43,7 @@
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
     "helmet": "^3.21.2",
+    "mysql": "^2.17.1",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",

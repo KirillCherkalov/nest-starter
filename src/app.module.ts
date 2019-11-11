@@ -15,7 +15,7 @@ import { ConfigService } from './config/implementations/config.service';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
-          type: 'postgres',
+          type: 'mysql',
           host: config.DB_HOST,
           port: config.DB_PORT,
           database: config.DB_NAME,
