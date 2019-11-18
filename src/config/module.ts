@@ -15,10 +15,10 @@ import TYPES from './types';
       useClass: ConfigDetector,
     },
     {
-      provide: TYPES.ConfigService,
+      provide: ConfigService,
       useClass: ConfigService,
     },
   ],
-  exports: [TYPES.ConfigService],
+  exports: [ConfigService],
 })
 export class ConfigModule {}
