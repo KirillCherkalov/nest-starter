@@ -6,8 +6,6 @@ import { AuthModule } from './auth/module';
 import { ConfigModule } from './config/module';
 import { ConfigService } from './config/implementations/config.service';
 
-import { AppController } from './app.controller';
-
 @Module({
   imports: [
     UsersModule,
