@@ -12,7 +12,7 @@ const migrationConfig = {
   database: config.DB_NAME,
   username: config.DB_USER,
   password: config.DB_PASSWORD,
-  migrationsTableName: "migrations_table",
+  migrationsTableName: "migrations",
   migrations: ["db/migrations/*.ts"],
   cli: {
     migrationsDir: "db/migrations",
