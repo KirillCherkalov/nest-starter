@@ -7,9 +7,11 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create';
 
+@ApiUseTags('Users')
 @Controller('users')
 export class UsersController {
   @Post()
