@@ -41,4 +41,8 @@ export class ConfigService implements IConfigService {
   get APP_PORT(): number {
     return this.config.APP_PORT;
   }
+
+  isDevelopment(): boolean {
+    return this.NODE_ENV === 'development';
+  }
 }

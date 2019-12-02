@@ -21,6 +21,7 @@ import { ConfigService } from './config/implementations/config.service';
           database: config.DB_NAME,
           username: config.DB_USER,
           password: config.DB_PASSWORD,
+          logging: config.isDevelopment(),
           entities: ['dist/**/entities/*{.ts,.js}'],
           /**
            * If query execution time exceed this given max execution time (in milliseconds) then logger will log this query.

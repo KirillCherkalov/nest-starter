@@ -9,33 +9,41 @@ import {
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
+import { User } from './entities/user';
+import { UsersService } from './service';
 import { CreateUserDto } from './dto/create';
+import { ParseIntPipe } from '../common/pipes/parse-int';
 
 @ApiUseTags('Users')
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   @Post()
-  create(@Body() createUserDto: CreateUserDto): string {
-    return 'create';
+  async create(@Body() body: CreateUserDto): Promise<User> {
+    return this.usersService.create(body);
   }
 
   @Get()
-  findAll(): string {
-    return 'findAll';
+  async findAll(): Promise<User[]> {
+    return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): string {
-    return `findOne ${id}`;
+  async findOne(@Param('id', new ParseIntPipe()) id: number): Promise<User> {
+    return this.usersService.findOne({ where: { id } });
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return body;
+  async update(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() body: CreateUserDto,
+  ): Promise<User> {
+    return this.usersService.update(id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseIntPipe()) id: number) {
     return `remove ${id}`;
   }
 }
