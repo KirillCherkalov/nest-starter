@@ -7,14 +7,14 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
-import { ApiUseTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 import { User } from './entities/user';
 import { UsersService } from './service';
 import { CreateUserDto } from './dto/create';
 import { ParseIntPipe } from '../common/pipes/parse-int';
 
-@ApiUseTags('Users')
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
