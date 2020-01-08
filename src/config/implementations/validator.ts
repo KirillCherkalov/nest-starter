@@ -16,6 +16,7 @@ const schema = Joi.object({
   APP_PORT: Joi.number()
     .integer()
     .required(),
+  JWT_SECRET: Joi.string().required(),
 });
 
 export class JoiValidator implements IValidator {
