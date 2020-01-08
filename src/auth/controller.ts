@@ -1,12 +1,14 @@
-import { Controller, Post } from '@nestjs/common';
+import { Request, Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
+  @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(): string {
-    return 'login';
+  login(@Request() req) {
+    return req.user;
   }
 
   @Post('registration')
