@@ -6,4 +6,5 @@ export interface IConfig {
   DB_USER: string;
   DB_PASSWORD: string;
   APP_PORT: number;
+  JWT_SECRET: string;
 }

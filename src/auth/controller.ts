@@ -1,12 +1,18 @@
-import { Controller, Post } from '@nestjs/common';
+import { Request, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthService } from './service';
+import { User } from '../db/models/user';
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(): string {
-    return 'login';
+  login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   @Post('registration')
@@ -17,5 +23,11 @@ export class AuthController {
   @Post('logout')
   logout(): string {
     return `logout`;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  profile(@Request() req): User {
+    return req.user;
   }
 }

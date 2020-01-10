@@ -42,6 +42,10 @@ export class ConfigService implements IConfigService {
     return this.config.APP_PORT;
   }
 
+  get JWT_SECRET(): string {
+    return this.config.JWT_SECRET;
+  }
+
   isDevelopment(): boolean {
     return this.NODE_ENV === 'development';
   }
