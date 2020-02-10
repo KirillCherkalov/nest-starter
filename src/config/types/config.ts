@@ -1,4 +1,4 @@
-export interface IConfig {
+export interface Config {
   NODE_ENV: string;
   DB_HOST: string;
   DB_PORT: number;

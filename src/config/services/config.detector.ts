@@ -1,20 +1,15 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { Injectable, Inject } from '@nestjs/common';
-
-import { IConfigDetector } from '../abstracts/config.detector';
-import { IConfig } from '../abstracts/config';
-import { IValidator } from '../abstracts/validator';
-import TYPES from '../types';
+import { Injectable } from '@nestjs/common';
 import { ENV_FILE_PATH } from '../constants';
+import { ConfigValidator } from './validator';
+import { Config } from '../types/config';
 
 @Injectable()
-export class ConfigDetector implements IConfigDetector {
-  constructor(
-    @Inject(TYPES.Validator) private readonly validator: IValidator,
-  ) {}
+export class ConfigDetector {
+  constructor(private readonly validator: ConfigValidator) {}
 
-  public getConfig(): IConfig {
+  public getConfig(): Config {
     let rawConfig: Record<string, string>;
 
     const fileAvailable: boolean = this.checkConfigFileAvailability(
@@ -26,12 +21,12 @@ export class ConfigDetector implements IConfigDetector {
       rawConfig = dotenv.parse(fileContent);
     } else {
       /**
-       * interfaces do not exist in runtime so we cannot get list of IConfig properties and pick them from process.env
+       * interfaces do not exist in runtime so we cannot get list of Config properties and pick them from process.env
        */
       rawConfig = process.env;
     }
 
-    const config: IConfig = this.validator.validate(rawConfig);
+    const config: Config = this.validator.validate(rawConfig);
 
     return config;
   }

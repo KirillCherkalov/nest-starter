@@ -1,16 +1,12 @@
-import { IConfigDetector } from '../abstracts/config.detector';
-import { Inject } from '@nestjs/common';
-import { IConfig } from '../abstracts/config';
-import TYPES from '../types';
-import { IConfigService } from '../abstracts/config.service';
+import { Injectable } from '@nestjs/common';
+import { Config } from '../types/config';
+import { ConfigDetector } from './config.detector';
 
-export class ConfigService implements IConfigService {
-  private readonly config: IConfig;
+@Injectable()
+export class ConfigService {
+  private readonly config: Config;
 
-  constructor(
-    @Inject(TYPES.ConfigDetector)
-    private readonly configDetector: IConfigDetector,
-  ) {
+  constructor(private readonly configDetector: ConfigDetector) {
     this.config = this.configDetector.getConfig();
   }
 

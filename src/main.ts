@@ -4,7 +4,7 @@ import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation';
 import { AllExceptionsFilter } from './common/filters/exception';
-import { ConfigService } from './config/implementations/config.service';
+import { ConfigService } from './config/services/config.service';
 import { Swagger } from './common/services/swagger';
 
 async function bootstrap() {

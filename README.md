@@ -21,7 +21,7 @@ $ yarn
 $ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
 $ yarn start:prod

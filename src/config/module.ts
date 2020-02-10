@@ -1,24 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigDetector } from './implementations/config.detector';
-import { ConfigService } from './implementations/config.service';
-import { JoiValidator } from './implementations/validator';
-import TYPES from './types';
+
+import { ConfigDetector } from './services/config.detector';
+import { ConfigService } from './services/config.service';
+import { ConfigValidator } from './services/validator';
 
 @Module({
-  providers: [
-    {
-      provide: TYPES.Validator,
-      useClass: JoiValidator,
-    },
-    {
-      provide: TYPES.ConfigDetector,
-      useClass: ConfigDetector,
-    },
-    {
-      provide: ConfigService,
-      useClass: ConfigService,
-    },
-  ],
+  providers: [ConfigValidator, ConfigDetector, ConfigService],
   exports: [ConfigService],
 })
 export class ConfigModule {}
