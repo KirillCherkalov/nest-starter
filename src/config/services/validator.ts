@@ -1,6 +1,5 @@
 import * as Joi from '@hapi/joi';
-import { IValidator } from '../abstracts/validator';
-import { IConfig } from '../abstracts/config';
+import { Config } from '../types/config';
 
 const schema = Joi.object({
   NODE_ENV: Joi.string()
@@ -19,13 +18,13 @@ const schema = Joi.object({
   JWT_SECRET: Joi.string().required(),
 });
 
-export class JoiValidator implements IValidator {
+export class ConfigValidator {
   public validate(value: any) {
     const config = Joi.attempt(value, schema, {
       abortEarly: false,
       convert: true,
       stripUnknown: true,
-    }) as IConfig;
+    }) as Config;
 
     return config;
   }
