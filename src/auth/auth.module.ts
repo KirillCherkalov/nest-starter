@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local';
 import { JwtStrategy } from './strategies/jwt';
-import { ConfigModule } from '../config/module';
+import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/services/config.service';
 
 @Module({

@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import Knex from 'knex';
 import { knexSnakeCaseMappers, Model } from 'objection';
 
-import { ConfigModule } from '../config/module';
+import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/services/config.service';
 import { User } from './models/user.entity';
 
