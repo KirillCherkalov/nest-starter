@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { User } from '../db/models/user';
-import { UsersService } from './service';
-import { CreateUserDto } from './dto/create';
+import { User } from '../db/models/user.entity';
+import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create.dto';
 import { ParseIntPipe } from '../common/pipes/parse-int';
 
 @ApiTags('Users')

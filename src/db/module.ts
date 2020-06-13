@@ -4,7 +4,7 @@ import { knexSnakeCaseMappers, Model } from 'objection';
 
 import { ConfigModule } from '../config/module';
 import { ConfigService } from '../config/services/config.service';
-import { User } from './models/user';
+import { User } from './models/user.entity';
 
 const models = [User];
 
