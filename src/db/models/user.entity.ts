@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { ModelOptions, QueryContext } from 'objection';
 
-import { BaseModel } from './base';
+import { BaseModel } from './base.entity';
 
 const SALT_ROUNDS: number = 12;
 
