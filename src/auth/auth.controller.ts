@@ -4,6 +4,9 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { User } from '../db/models/user.entity';
+import { AccessToken } from './types';
+import { RequestContext } from 'src/common/types';
+
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -11,7 +14,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(@Request() req) {
+  login(@Request() req: RequestContext): Promise<AccessToken> {
     return this.authService.login(req.user);
   }
 

@@ -19,7 +19,7 @@ const schema = Joi.object({
 });
 
 export class ConfigValidator {
-  public validate(value: any) {
+  public validate(value: any): Config {
     const config = Joi.attempt(value, schema, {
       abortEarly: false,
       convert: true,

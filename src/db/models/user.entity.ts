@@ -3,7 +3,7 @@ import { ModelOptions, QueryContext } from 'objection';
 
 import { BaseModel } from './base.entity';
 
-const SALT_ROUNDS: number = 12;
+const SALT_ROUNDS = 12;
 
 export class User extends BaseModel {
   static tableName = 'users';
@@ -22,30 +22,31 @@ export class User extends BaseModel {
 
   updatedAt: Date;
 
-  public $beforeInsert(ctx: QueryContext) {
-    const promise = super.$beforeInsert(ctx);
-    return Promise.resolve(promise).then(() => {
-      return this.generateHash();
-    });
+  public async $beforeInsert(ctx: QueryContext): Promise<void> {
+    await super.$beforeInsert(ctx);
+
+    this.generateHash();
   }
 
-  public $beforeUpdate(queryOptions: ModelOptions, ctx: QueryContext) {
-    const promise = super.$beforeUpdate(queryOptions, ctx);
-    return Promise.resolve(promise).then(() => {
-      if (queryOptions.patch && this.password === undefined) {
-        return;
-      }
-      return this.generateHash();
-    });
+  public async $beforeUpdate(
+    queryOptions: ModelOptions,
+    ctx: QueryContext,
+  ): Promise<void> {
+    await super.$beforeUpdate(queryOptions, ctx);
+
+    if (queryOptions.patch && this.password === undefined) {
+      return;
+    }
+    this.generateHash();
   }
 
   public verifyPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
 
-  private generateHash(): Promise<void> {
-    return bcrypt.hash(this.password, SALT_ROUNDS).then(hash => {
-      this.password = hash;
-    });
+  private async generateHash() {
+    const hash = await bcrypt.hash(this.password, SALT_ROUNDS);
+
+    this.password = hash;
   }
 }
