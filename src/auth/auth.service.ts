@@ -12,7 +12,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  async validate(email: string, password: string): Promise<any> {
+  async validate(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOne({ email });
     if (await user.verifyPassword(password)) {
       return user;

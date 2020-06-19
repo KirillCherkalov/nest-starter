@@ -30,7 +30,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
-  profile(@Request() req): User {
+  profile(@Request() req: RequestContext): User {
     return req.user;
   }
 }

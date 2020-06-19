@@ -6,19 +6,16 @@ const schema = Joi.object({
     .valid('development', 'staging', 'production')
     .default('development'),
   DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number()
-    .integer()
-    .required(),
+  DB_PORT: Joi.number().integer().required(),
   DB_NAME: Joi.string().required(),
   DB_USER: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
-  APP_PORT: Joi.number()
-    .integer()
-    .required(),
+  APP_PORT: Joi.number().integer().required(),
   JWT_SECRET: Joi.string().required(),
 });
 
 export class ConfigValidator {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public validate(value: any): Config {
     const config = Joi.attempt(value, schema, {
       abortEarly: false,
