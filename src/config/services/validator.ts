@@ -1,4 +1,5 @@
 import * as Joi from '@hapi/joi';
+
 import { Config } from '../types/config';
 
 const schema = Joi.object({

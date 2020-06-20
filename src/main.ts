@@ -9,6 +9,7 @@ import { Swagger } from './common/services/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.setGlobalPrefix('/api/v1');
   const { httpAdapter } = app.get(HttpAdapterHost);
   const swagger = new Swagger(app);
@@ -21,6 +22,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
   const configServiceInstance = await app.resolve(ConfigService);
+
   await app.listen(configServiceInstance.APP_PORT);
 }
 

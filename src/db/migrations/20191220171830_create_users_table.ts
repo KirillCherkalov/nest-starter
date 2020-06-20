@@ -2,8 +2,8 @@ import * as Knex from 'knex';
 
 const tableName = 'users';
 
-export async function up(knex: Knex): Promise<Knex.SchemaBuilder> {
-  return knex.schema.createTable(tableName, (t) => {
+export async function up(knex: Knex): Promise<void> {
+  return knex.schema.createTable(tableName, t => {
     // this creates an "id" column that gets autoincremented
     t.increments();
     t.string('email').unique();
@@ -13,6 +13,6 @@ export async function up(knex: Knex): Promise<Knex.SchemaBuilder> {
   });
 }
 
-export async function down(knex: Knex): Promise<Knex.SchemaBuilder> {
+export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTable(tableName);
 }

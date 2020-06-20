@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { User } from '../db/models/user.entity';
 import { UsersService } from '../users/users.service';
+
 import { AccessToken } from './types';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class AuthService {
 
   async validate(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOne({ email });
+
     if (await user.verifyPassword(password)) {
       return user;
     }
@@ -24,6 +26,7 @@ export class AuthService {
   async login(user: User): Promise<AccessToken> {
     const { id, ...data } = user.toJSON();
     const payload = { ...data, sub: id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

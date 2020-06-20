@@ -2,10 +2,11 @@ import { Request, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
-import { AuthService } from './auth.service';
-import { User } from '../db/models/user.entity';
-import { AccessToken } from './types';
 import { RequestContext } from 'src/common/types';
+import { User } from 'src/db/models/user.entity';
+
+import { AuthService } from './auth.service';
+import { AccessToken } from './types';
 
 @ApiTags('Authentication')
 @Controller('auth')

@@ -1,9 +1,12 @@
-import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+
+import * as dotenv from 'dotenv';
 import { Injectable } from '@nestjs/common';
+
 import { ENV_FILE_PATH } from '../constants';
-import { ConfigValidator } from './validator';
 import { Config } from '../types/config';
+
+import { ConfigValidator } from './validator';
 
 @Injectable()
 export class ConfigDetector {
@@ -18,6 +21,7 @@ export class ConfigDetector {
 
     if (fileAvailable) {
       const fileContent = fs.readFileSync(ENV_FILE_PATH);
+
       rawConfig = dotenv.parse(fileContent);
     } else {
       /**
@@ -34,6 +38,7 @@ export class ConfigDetector {
   private checkConfigFileAvailability(path: string): boolean {
     try {
       fs.accessSync(path, fs.constants.R_OK);
+
       return true;
     } catch (err) {
       return false;

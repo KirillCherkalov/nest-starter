@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { User } from '../db/models/user.entity';
+
 import { CreateUserDto } from './dto/create.dto';
 import { FindUserDto } from './dto/find.dto';
 
@@ -10,6 +11,7 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     const users = await this.userModel.query();
+
     return users;
   }
 
@@ -21,16 +23,19 @@ export class UsersService {
 
   async create(data: CreateUserDto): Promise<User> {
     const user = await this.userModel.query().insert(data);
+
     return user;
   }
 
   async update(id: number, data: CreateUserDto): Promise<User> {
     const user = await this.userModel.query().patchAndFetchById(id, data);
+
     return user;
   }
 
   async remove(id: number): Promise<number> {
     const numDeleted = await this.userModel.query().deleteById(id);
+
     return numDeleted;
   }
 }
