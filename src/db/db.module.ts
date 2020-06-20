@@ -9,12 +9,10 @@ import { User } from './models/user.entity';
 
 const models = [User];
 
-const modelProviders = models.map(model => {
-  return {
-    provide: model.name,
-    useValue: model,
-  };
-});
+const modelProviders = models.map(model => ({
+  provide: model.name,
+  useValue: model,
+}));
 
 const providers = [
   ...modelProviders,
