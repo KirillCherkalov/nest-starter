@@ -15,9 +15,8 @@ const schema = Joi.object({
   JWT_SECRET: Joi.string().required(),
 });
 
-export class ConfigValidator {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public validate(value: any): Config {
+export class ConfigValidator<T = any> {
+  public validate(value: T): Config {
     const config = Joi.attempt(value, schema, {
       abortEarly: false,
       convert: true,

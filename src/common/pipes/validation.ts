@@ -7,14 +7,14 @@ import {
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 
-export class ValidationPipe implements PipeTransform<any> {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async transform(value: any, metadata: ArgumentMetadata): Promise<number> {
+export class ValidationPipe<T = any> implements PipeTransform {
+  async transform(value: T, metadata: ArgumentMetadata): Promise<T | never> {
     const { metatype } = metadata;
 
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
+
     const object = plainToClass(metatype, value);
     const errors = await validate(object);
 

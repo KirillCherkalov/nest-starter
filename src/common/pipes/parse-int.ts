@@ -8,7 +8,7 @@ import {
 @Injectable()
 export class ParseIntPipe implements PipeTransform<string, number> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  transform(value: string, metadata: ArgumentMetadata): number {
+  transform(value: string, metadata: ArgumentMetadata): number | never {
     const val = parseInt(value, 10);
 
     if (isNaN(val)) {
