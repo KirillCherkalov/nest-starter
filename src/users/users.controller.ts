@@ -6,13 +6,14 @@ import {
   Delete,
   Param,
   Body,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { User } from '../db/models/user.entity';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
-import { ParseIntPipe } from '../common/pipes/parse-int';
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,20 +31,20 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', new ParseIntPipe()) id: number): Promise<User> {
-    return this.usersService.findOne({ where: { id } });
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return this.usersService.findOne({ id });
   }
 
   @Put(':id')
   async update(
-    @Param('id', new ParseIntPipe()) id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: CreateUserDto,
   ): Promise<User> {
     return this.usersService.update(id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id', new ParseIntPipe()) id: number) {
-    return `remove ${id}`;
+  remove(@Param('id', ParseIntPipe) id: number): Promise<number> {
+    return this.usersService.remove(id);
   }
 }

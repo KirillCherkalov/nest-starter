@@ -1,19 +1,18 @@
 import { Global, Module } from '@nestjs/common';
-import Knex from 'knex';
 import { knexSnakeCaseMappers, Model } from 'objection';
+import Knex from 'knex';
 
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/services/config.service';
+
 import { User } from './models/user.entity';
 
 const models = [User];
 
-const modelProviders = models.map(model => {
-  return {
-    provide: model.name,
-    useValue: model,
-  };
-});
+const modelProviders = models.map(model => ({
+  provide: model.name,
+  useValue: model,
+}));
 
 const providers = [
   ...modelProviders,
@@ -40,6 +39,7 @@ const providers = [
       });
 
       Model.knex(knex);
+
       return knex;
     },
   },

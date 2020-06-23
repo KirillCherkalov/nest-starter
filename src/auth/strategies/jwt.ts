@@ -14,8 +14,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    const { sub, iat, exp, ...user } = payload;
+  async validate<T extends { sub: string }>(
+    payload: T,
+  ): Promise<
+    {
+      id: string;
+    } & Pick<T, Exclude<keyof T, 'sub'>>
+  > {
+    const { sub, ...user } = payload;
+
     return { id: sub, ...user };
   }
 }

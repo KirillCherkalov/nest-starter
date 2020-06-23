@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+
 import { Config } from '../types/config';
+
 import { ConfigDetector } from './config.detector';
 
 @Injectable()

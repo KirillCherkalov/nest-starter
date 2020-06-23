@@ -1,14 +1,14 @@
-import { NestApplication } from '@nestjs/core';
+import { INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 export class Swagger {
-  private readonly app: NestApplication;
+  private readonly app: INestApplication;
 
-  constructor(app) {
+  constructor(app: INestApplication) {
     this.app = app;
   }
 
-  public init() {
+  public init(): void {
     const options = new DocumentBuilder()
       .setTitle('{Project name} API')
       .setDescription('{Project name} API description')
@@ -16,6 +16,7 @@ export class Swagger {
       .build();
 
     const document = SwaggerModule.createDocument(this.app, options);
+
     SwaggerModule.setup('api/swagger', this.app, document);
   }
 }

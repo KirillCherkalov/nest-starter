@@ -2,8 +2,12 @@ import { Request, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
+import { RequestContext } from 'src/common/types';
+import { User } from 'src/db/models/user.entity';
+
 import { AuthService } from './auth.service';
-import { User } from '../db/models/user.entity';
+import { AccessToken } from './types';
+
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -11,7 +15,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(@Request() req) {
+  login(@Request() req: RequestContext): Promise<AccessToken> {
     return this.authService.login(req.user);
   }
 
@@ -27,7 +31,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
-  profile(@Request() req): User {
+  profile(@Request() req: RequestContext): User {
     return req.user;
   }
 }
