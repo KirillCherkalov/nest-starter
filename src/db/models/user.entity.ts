@@ -24,8 +24,7 @@ export class User extends BaseModel {
 
   public async $beforeInsert(ctx: QueryContext): Promise<void> {
     await super.$beforeInsert(ctx);
-
-    this.generateHash();
+    await this.generateHash();
   }
 
   public async $beforeUpdate(
@@ -37,7 +36,8 @@ export class User extends BaseModel {
     if (queryOptions.patch && this.password === undefined) {
       return;
     }
-    this.generateHash();
+
+    await this.generateHash();
   }
 
   public verifyPassword(password: string): Promise<boolean> {
