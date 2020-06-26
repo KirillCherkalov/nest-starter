@@ -10,10 +10,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { Page } from 'src/common/types';
+
 import { User } from '../db/models/user.entity';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
+import { FindUsersDto } from './dto/find-users.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,8 +29,8 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  async findAll(@Body() body: FindUsersDto): Promise<Page<User>> {
+    return this.usersService.findAll(body);
   }
 
   @Get(':id')
