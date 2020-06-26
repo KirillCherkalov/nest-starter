@@ -8,6 +8,12 @@ import {
 import { UniqueViolationError } from 'objection';
 import dotenv from 'dotenv';
 
+interface errorResponse<T> {
+  path: string;
+  timestamp: string;
+  exception?: T;
+}
+
 @Catch()
 export class AllExceptionsFilter<T = any> implements ExceptionFilter {
   catch(exception: T, host: ArgumentsHost): void {
@@ -26,10 +32,15 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       status = HttpStatus.CONFLICT;
     }
 
-    response.status(status).json({
+    const responseObj: errorResponse<T> = {
       timestamp: new Date().toISOString(),
       path: request.url,
-      exception: parsed.NODE_ENV !== 'production' && exception,
-    });
+    };
+
+    if (parsed.NODE_ENV !== 'production') {
+      responseObj.exception = exception;
+    }
+
+    response.status(status).json(responseObj);
   }
 }
