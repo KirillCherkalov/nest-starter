@@ -1,16 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { Page } from 'src/common/types';
+
 import { User } from '../db/models/user.entity';
 
 import { CreateUserDto } from './dto/create.dto';
 import { FindUserDto } from './dto/find.dto';
+import { FindUsersDto } from './dto/find-users.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@Inject('User') private userModel: typeof User) {}
 
-  async findAll(): Promise<User[]> {
-    const users = await this.userModel.query();
+  async findAll(findUserDto: FindUsersDto): Promise<Page<User>> {
+    const { page, pageSize } = findUserDto;
+    const users = await this.userModel.query().page(page, pageSize);
 
     return users;
   }

@@ -1,5 +1,5 @@
 import helmet from 'helmet';
-import { NestFactory, HttpAdapterHost } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation';
@@ -11,7 +11,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('/api/v1');
-  const { httpAdapter } = app.get(HttpAdapterHost);
   const swagger = new Swagger(app);
 
   swagger.init();
@@ -19,7 +18,7 @@ async function bootstrap() {
   app.enableCors();
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   const configServiceInstance = await app.resolve(ConfigService);
 

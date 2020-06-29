@@ -1,10 +1,46 @@
-import { Catch, ArgumentsHost } from '@nestjs/common';
-import { BaseExceptionFilter } from '@nestjs/core';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { UniqueViolationError } from 'objection';
+import dotenv from 'dotenv';
+
+interface errorResponse<T> {
+  path: string;
+  timestamp: string;
+  exception?: T;
+}
 
 @Catch()
-export class AllExceptionsFilter<T = any> extends BaseExceptionFilter {
+export class AllExceptionsFilter<T = any> implements ExceptionFilter {
   catch(exception: T, host: ArgumentsHost): void {
-    // use some 3rd party error catching service here if needed(eg. Sentry.io)
-    return super.catch(exception, host);
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const request = ctx.getRequest();
+
+    const { parsed } = dotenv.config();
+
+    let status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    if (exception instanceof UniqueViolationError) {
+      status = HttpStatus.CONFLICT;
+    }
+
+    const responseObj: errorResponse<T> = {
+      timestamp: new Date().toISOString(),
+      path: request.url,
+    };
+
+    if (parsed.NODE_ENV !== 'production') {
+      responseObj.exception = exception;
+    }
+
+    response.status(status).json(responseObj);
   }
 }
