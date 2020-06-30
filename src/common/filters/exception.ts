@@ -4,6 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UniqueViolationError } from 'objection';
 import dotenv from 'dotenv';
@@ -30,6 +31,10 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
 
     if (exception instanceof UniqueViolationError) {
       status = HttpStatus.CONFLICT;
+    }
+
+    if (exception instanceof UnauthorizedException) {
+      status = HttpStatus.UNAUTHORIZED;
     }
 
     const responseObj: errorResponse<T> = {

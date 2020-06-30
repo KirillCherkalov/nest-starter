@@ -19,7 +19,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "serve": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "yarn build && yarn pm2:start:prod",
     "pm2:start:prod": "pm2 startOrRestart ./pm2/production.json",

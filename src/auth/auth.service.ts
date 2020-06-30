@@ -16,7 +16,7 @@ export class AuthService {
   async validate(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOne({ email });
 
-    if (await user.verifyPassword(password)) {
+    if (user && (await user.verifyPassword(password))) {
       return user;
     }
 
@@ -28,7 +28,7 @@ export class AuthService {
     const payload = { ...data, sub: id };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 }
