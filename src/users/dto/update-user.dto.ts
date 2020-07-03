@@ -1,4 +1,13 @@
-import { IsString, IsEmail, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  Matches,
+  MinLength,
+  MaxLength,
+} from 'class-validator';
+
+import { passwordExp } from 'src/common/regex';
 
 export class UpdateUserDto {
   @IsEmail()
@@ -11,5 +20,8 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
+  @MinLength(8)
+  @MaxLength(20)
+  @Matches(passwordExp, { message: 'Password too weak' })
   readonly password?: string;
 }
