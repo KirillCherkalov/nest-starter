@@ -1,4 +1,11 @@
-import { Request, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Request,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Body,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { RequestContext } from 'src/common/types';
@@ -8,6 +15,8 @@ import { AuthService } from './auth.service';
 import { AccessToken } from './types';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto copy';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -21,13 +30,18 @@ export class AuthController {
   }
 
   @Post('registration')
-  registration(): string {
-    return 'registration';
+  registration(@Body() body: RegisterUserDto): Promise<User> {
+    return this.authService.register(body);
   }
 
   @Post('logout')
   logout(): string {
     return `logout`;
+  }
+
+  @Post('reset-password')
+  resetPassword(@Body() body: ResetPasswordDto): Promise<User> {
+    return this.authService.resetPassword(body);
   }
 
   @UseGuards(JwtAuthGuard)

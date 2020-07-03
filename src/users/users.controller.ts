@@ -18,6 +18,7 @@ import { User } from 'src/db/models/user.entity';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUsersDto } from './dto/find-users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Users')
@@ -43,7 +44,7 @@ export class UsersController {
   @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: CreateUserDto,
+    @Body() body: UpdateUserDto,
   ): Promise<User> {
     return this.usersService.update(id, body);
   }

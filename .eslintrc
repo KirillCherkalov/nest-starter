@@ -40,17 +40,18 @@
     "newline-before-return": ["error"],
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let"], "next": "*" },
       { "blankLine": "always", "prev": "*", "next": "block-like" },
       {
         "blankLine": "any",
-        "prev": ["const", "let", "var"],
-        "next": ["const", "let", "var"]
+        "prev": ["const", "let"],
+        "next": ["const", "let"]
       }
     ],
     "import/newline-after-import": ["error", { "count": 1 }],
     "lines-between-class-members": ["error", "always"],
-    "arrow-body-style": ["error", "as-needed"]
+    "arrow-body-style": ["error", "as-needed"],
+    "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 0}]
   },
   "settings": {
     "import/resolver": {
