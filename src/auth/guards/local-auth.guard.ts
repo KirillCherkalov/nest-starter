@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+// remove canActivate and handleRequest methods if you will use jwt auth
 @Injectable()
 export class LocalAuthGuard<T = any> extends AuthGuard('local') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
