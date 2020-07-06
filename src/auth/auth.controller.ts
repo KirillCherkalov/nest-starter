@@ -5,6 +5,7 @@ import {
   Post,
   UseGuards,
   Body,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -12,11 +13,10 @@ import { RequestContext } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
 
 import { AuthService } from './auth.service';
-import { AccessToken } from './types';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto copy';
+import { SessionGuard } from './guards/session-auth.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -25,8 +25,10 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Request() req: RequestContext): Promise<AccessToken> {
-    return this.authService.login(req.user);
+  login(): Promise<void> {
+    // replace for jwt auth
+    // return this.authService.login(req.user);
+    return;
   }
 
   @Post('registration')
@@ -35,8 +37,10 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(): string {
-    return `logout`;
+  logout(@Request() req: RequestContext): void {
+    req.session.destroy(function (error) {
+      throw new UnauthorizedException(error);
+    });
   }
 
   @Post('reset-password')
@@ -44,7 +48,7 @@ export class AuthController {
     return this.authService.resetPassword(body);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(SessionGuard)
   @Get('profile')
   profile(@Request() req: RequestContext): User {
     return req.user;

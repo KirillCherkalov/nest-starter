@@ -6,5 +6,7 @@ export interface Config {
   DB_USER: string;
   DB_PASSWORD: string;
   APP_PORT: number;
-  JWT_SECRET: string;
+  // replace SESSION_SECRET on JWT_SECRET for jwt auth
+  // JWT_SECRET: string;
+  SESSION_SECRET: string;
 }

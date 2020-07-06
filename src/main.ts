@@ -1,5 +1,9 @@
 import helmet from 'helmet';
 import { NestFactory } from '@nestjs/core';
+import passport from 'passport';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import * as redis from 'redis';
 
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation';
@@ -21,6 +25,32 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const configServiceInstance = await app.resolve(ConfigService);
+
+  app.use(
+    session({
+      secret: configServiceInstance.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      /**
+       * You also can remove "store" key(for test purpose) and do not use Redis, but keep in mind that
+       * The default server-side session storage, MemoryStore, is purposely not designed for a production environment.
+       * It will leak memory under most conditions, does not scale past a single process,
+       * and is meant for debugging and developing.
+       * https://github.com/expressjs/session#sessionoptions
+       */
+      store: new (connectRedis(session))({
+        /**
+         * If you have redis-server running on the same machine as node,
+         * then the defaults for port and host are probably fine
+         * and you don't need to supply any arguments.
+         * https://github.com/NodeRedis/node-redis#rediscreateclient
+         */
+        client: redis.createClient(),
+      }),
+    }),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   await app.listen(configServiceInstance.APP_PORT);
 }

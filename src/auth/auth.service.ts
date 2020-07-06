@@ -3,19 +3,18 @@ import {
   UnauthorizedException,
   NotFoundException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 
-import { AccessToken } from './types';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto copy';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService,
+    // uncomment for jwt auth
+    // private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
   ) {}
 
@@ -33,14 +32,15 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<AccessToken> {
-    const { id, ...data } = user.toJSON();
-    const payload = { ...data, sub: id };
+  // uncomment for jwt auth
+  // async login(user: User): Promise<AccessToken> {
+  //   const { id, ...data } = user.toJSON();
+  //   const payload = { ...data, sub: id };
 
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
-  }
+  //   return {
+  //     accessToken: this.jwtService.sign(payload),
+  //   };
+  // }
 
   async register(registerUserDto: RegisterUserDto): Promise<User> {
     const user = await this.usersService.create(registerUserDto);
