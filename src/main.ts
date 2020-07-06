@@ -26,6 +26,7 @@ async function bootstrap() {
 
   const configServiceInstance = await app.resolve(ConfigService);
 
+  // remove this for jwt auth
   app.use(
     session({
       secret: configServiceInstance.SESSION_SECRET,
@@ -49,6 +50,7 @@ async function bootstrap() {
       }),
     }),
   );
+  // also remove passport.initialize() and passport.session() for jwt auth
   app.use(passport.initialize());
   app.use(passport.session());
 
