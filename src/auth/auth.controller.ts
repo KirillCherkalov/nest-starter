@@ -5,7 +5,6 @@ import {
   Post,
   UseGuards,
   Body,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -43,9 +42,13 @@ export class AuthController {
 
   @Post('logout')
   logout(@Request() req: RequestContext): void {
-    req.session.destroy(function (error) {
-      throw new UnauthorizedException(error);
-    });
+    /**
+     * It is required to pass cb function to destroy method.
+     * But for now it useless. So I pass empty arrow function to avoid typescript error
+     * and disabled eslint rule to pass eslint
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    req.session.destroy(() => {});
   }
 
   @Post('reset-password')
