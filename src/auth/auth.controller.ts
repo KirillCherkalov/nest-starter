@@ -5,6 +5,7 @@ import {
   Post,
   UseGuards,
   Body,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -14,8 +15,11 @@ import { User } from 'src/db/models/user.entity';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { ResetPasswordDto } from './dto/reset-password.dto copy';
+import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { SessionGuard } from './guards/session-auth.guard';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
+import { ResetToken } from './types';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -51,9 +55,24 @@ export class AuthController {
     req.session.destroy(() => {});
   }
 
-  @Post('reset-password')
-  resetPassword(@Body() body: ResetPasswordDto): Promise<User> {
-    return this.authService.resetPassword(body);
+  // replace SessionGuard on JwtAuthGuard for jwt auth
+  @UseGuards(SessionGuard)
+  @Post('change-password')
+  changePassword(@Body() body: ChangePasswordDto): Promise<User> {
+    return this.authService.changePassword(body);
+  }
+
+  @Post('reset-password-confirm')
+  resetPasswordConfirm(
+    @Query() query: ResetToken,
+    @Body() body: ResetPasswordConfirmDto,
+  ): Promise<User> {
+    return this.authService.resetPasswordConfirm(query, body);
+  }
+
+  @Post('forgot')
+  forgotPassword(@Body() body: ForgotPasswordDto): Promise<void> {
+    return this.authService.forgotPassword(body);
   }
 
   // replace SessionGuard on JwtAuthGuard for jwt auth

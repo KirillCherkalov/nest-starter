@@ -8,7 +8,7 @@ const SALT_ROUNDS = 12;
 export class User extends BaseModel {
   static tableName = 'users';
 
-  static hidden = ['password'];
+  static hidden = ['password', 'resetPasswordExpires', 'resetPasswordToken'];
 
   static timestamp = true;
 
@@ -17,6 +17,10 @@ export class User extends BaseModel {
   email: string;
 
   password: string;
+
+  resetPasswordToken: string;
+
+  resetPasswordExpires: Date;
 
   createdAt: Date;
 

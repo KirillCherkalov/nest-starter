@@ -1,6 +1,5 @@
 import {
   IsString,
-  IsEmail,
   Matches,
   IsNotEmpty,
   MaxLength,
@@ -9,18 +8,11 @@ import {
 
 import { passwordExp } from 'src/common/regex';
 
-export class ChangePasswordDto {
-  @IsEmail()
-  readonly email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly oldPassword: string;
-
+export class ResetPasswordConfirmDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)
   @Matches(passwordExp, { message: 'Password too weak' })
-  readonly newPassword: string;
+  readonly password: string;
 }
