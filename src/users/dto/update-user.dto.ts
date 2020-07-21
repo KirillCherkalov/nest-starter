@@ -25,7 +25,7 @@ export class UpdateUserDto {
 
   @IsDateString()
   @IsOptional()
-  readonly resetPasswordExpires?: Date;
+  readonly resetPasswordExpiresAt?: Date;
 
   @IsString()
   @IsOptional()

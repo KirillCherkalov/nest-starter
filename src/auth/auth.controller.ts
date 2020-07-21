@@ -52,7 +52,7 @@ export class AuthController {
   }
 
   @Post('forgot')
-  forgotPassword(@Body() body: ForgotPasswordDto): Promise<void> {
+  forgotPassword(@Body() body: ForgotPasswordDto): Promise<string | false> {
     return this.authService.forgotPassword(body);
   }
 

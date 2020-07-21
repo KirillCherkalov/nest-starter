@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import bcrypt from 'bcrypt';
 import { add, compareAsc } from 'date-fns';
-import nodemailer from 'nodemailer';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { EmailsService } from 'src/emails/emails.service';
 
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
@@ -24,6 +24,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
+    private readonly emailsService: EmailsService,
   ) {}
 
   async validate(email: string, password: string): Promise<User | never> {
@@ -55,7 +56,9 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<void> {
+  async forgotPassword(
+    forgotPasswordDto: ForgotPasswordDto,
+  ): Promise<string | false> {
     const user = await this.usersService.findOne(forgotPasswordDto);
 
     if (!user) {
@@ -68,34 +71,19 @@ export class AuthService {
       forgotPasswordDto.email,
       SALT_ROUNDS,
     );
-    const resetPasswordExpires = add(new Date(), { days: 1 });
+    const resetPasswordExpiresAt = add(new Date(), { days: 1 });
 
     await this.usersService.update(user.id, {
-      resetPasswordExpires,
+      resetPasswordExpiresAt,
       resetPasswordToken,
     });
 
-    const testAccount = await nodemailer.createTestAccount();
-
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-
-    const info = await transporter.sendMail({
+    return this.emailsService.sendMail({
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Hello ',
       html: `resetPasswordToken=${resetPasswordToken}`,
     });
-
-    // Preview only available when sending through an Ethereal account
-    return nodemailer.getTestMessageUrl(info);
   }
 
   async resetPasswordConfirm(
@@ -112,13 +100,13 @@ export class AuthService {
       );
     }
 
-    if (compareAsc(new Date(), user.resetPasswordExpires) !== -1) {
+    if (compareAsc(new Date(), user.resetPasswordExpiresAt) !== -1) {
       throw new UnauthorizedException('Password reset token has expired.');
     }
 
     const updatableUser = this.usersService.update(user.id, {
       password,
-      resetPasswordExpires: null,
+      resetPasswordExpiresAt: null,
       resetPasswordToken: null,
     });
 
