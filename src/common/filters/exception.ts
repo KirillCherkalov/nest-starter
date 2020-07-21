@@ -7,7 +7,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UniqueViolationError } from 'objection';
-import dotenv from 'dotenv';
+
+import { ConfigService } from 'src/config/services/config.service';
 
 interface errorResponse<T> {
   path: string;
@@ -17,12 +18,12 @@ interface errorResponse<T> {
 
 @Catch()
 export class AllExceptionsFilter<T = any> implements ExceptionFilter {
+  constructor(private readonly configService: ConfigService) {}
+
   catch(exception: T, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
-
-    const { parsed } = dotenv.config();
 
     let status =
       exception instanceof HttpException
@@ -42,7 +43,7 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       path: request.url,
     };
 
-    if (parsed.NODE_ENV !== 'production') {
+    if (this.configService.NODE_ENV !== 'production') {
       responseObj.exception = exception;
     }
 
