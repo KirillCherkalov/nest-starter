@@ -13,15 +13,14 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { Page } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
-import { SessionGuard } from 'src/auth/guards/session-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-// replace on JwtAuthGuard for jwt auth
-@UseGuards(SessionGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {

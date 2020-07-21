@@ -16,10 +16,10 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
-import { SessionGuard } from './guards/session-auth.guard';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken } from './types';
+import { ResetToken, AccessToken } from './types';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -28,35 +28,16 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(): Promise<void> {
-    return;
+  login(@Request() req: RequestContext): Promise<AccessToken> {
+    return this.authService.login(req.user);
   }
-
-  // replace current login method on this for jwt auth
-  // @UseGuards(LocalAuthGuard)
-  // @Post('login')
-  // login(@Request() req: RequestContext): Promise<AccessToken> {
-  //   return this.authService.login(req.user);
-  // }
 
   @Post('registration')
   registration(@Body() body: RegisterUserDto): Promise<User> {
     return this.authService.register(body);
   }
 
-  @Post('logout')
-  logout(@Request() req: RequestContext): void {
-    /**
-     * It is required to pass cb function to destroy method.
-     * But for now it useless. So I pass empty arrow function to avoid typescript error
-     * and disabled eslint rule to pass eslint
-     */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    req.session.destroy(() => {});
-  }
-
-  // replace SessionGuard on JwtAuthGuard for jwt auth
-  @UseGuards(SessionGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('change-password')
   changePassword(@Body() body: ChangePasswordDto): Promise<User> {
     return this.authService.changePassword(body);
@@ -75,8 +56,7 @@ export class AuthController {
     return this.authService.forgotPassword(body);
   }
 
-  // replace SessionGuard on JwtAuthGuard for jwt auth
-  @UseGuards(SessionGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   profile(@Request() req: RequestContext): User {
     return req.user;

@@ -12,9 +12,7 @@ const schema = Joi.object({
   DB_USER: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
   APP_PORT: Joi.number().integer().required(),
-  // replace SESSION_SECRET on JWT_SECRET for jwt auth
-  // JWT_SECRET: Joi.string().required(),
-  SESSION_SECRET: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
 });
 
 export class ConfigValidator<T = any> {

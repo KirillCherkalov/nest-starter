@@ -6,6 +6,7 @@ import {
 import bcrypt from 'bcrypt';
 import { add, compareAsc } from 'date-fns';
 import nodemailer from 'nodemailer';
+import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -14,15 +15,14 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken } from './types';
+import { ResetToken, AccessToken } from './types';
 
 const SALT_ROUNDS = 12;
 
 @Injectable()
 export class AuthService {
   constructor(
-    // uncomment for jwt auth
-    // private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
   ) {}
 
@@ -40,15 +40,14 @@ export class AuthService {
     return null;
   }
 
-  // uncomment for jwt auth
-  // async login(user: User): Promise<AccessToken> {
-  //   const { id, ...data } = user.toJSON();
-  //   const payload = { ...data, sub: id };
+  async login(user: User): Promise<AccessToken> {
+    const { id, ...data } = user.toJSON();
+    const payload = { ...data, sub: id };
 
-  //   return {
-  //     accessToken: this.jwtService.sign(payload),
-  //   };
-  // }
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
 
   async register(registerUserDto: RegisterUserDto): Promise<User> {
     const user = await this.usersService.create(registerUserDto);

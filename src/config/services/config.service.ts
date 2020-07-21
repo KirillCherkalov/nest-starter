@@ -40,13 +40,8 @@ export class ConfigService {
     return this.config.APP_PORT;
   }
 
-  // replace SESSION_SECRET on this for jwt auth
-  // get JWT_SECRET(): string {
-  //   return this.config.JWT_SECRET;
-  // }
-
-  get SESSION_SECRET(): string {
-    return this.config.SESSION_SECRET;
+  get JWT_SECRET(): string {
+    return this.config.JWT_SECRET;
   }
 
   isDevelopment(): boolean {

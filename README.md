@@ -27,21 +27,6 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
-## Files that you need to change to use jwt auth instead of sessions
-
-- main.ts
-- local-auth.guard.ts
-- jwt.ts
-- auth.controller.ts
-- auth.module.ts
-- auth.service.ts
-- config.service.ts
-- validator.ts
-- config.ts
-- users.controller.ts
-
-Tips for replacement you can search by keyword phrase - `jwt auth`
-
 ## Test
 
 ```bash
