@@ -44,6 +44,10 @@ export class ConfigService {
     return this.config.JWT_SECRET;
   }
 
+  get BASE_FRONTEND_URL(): string {
+    return this.config.BASE_FRONTEND_URL;
+  }
+
   isDevelopment(): boolean {
     return this.NODE_ENV === 'development';
   }

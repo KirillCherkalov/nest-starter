@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { ModelOptions, QueryContext } from 'objection';
+import { add, isAfter } from 'date-fns';
 
 import { BaseModel } from './base.entity';
 
@@ -46,6 +47,15 @@ export class User extends BaseModel {
 
   public verifyPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
+  }
+
+  public isPasswordResetTokenValid(): boolean {
+    return isAfter(this.resetPasswordExpiresAt, new Date());
+  }
+
+  public async generatePasswordResetToken(): Promise<void> {
+    this.resetPasswordToken = await bcrypt.hash(this.email, SALT_ROUNDS);
+    this.resetPasswordExpiresAt = add(new Date(), { days: 1 });
   }
 
   private async generateHash() {
