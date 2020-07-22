@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { ModelOptions, QueryContext } from 'objection';
 import { add, isAfter } from 'date-fns';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 import { BaseModel } from './base.entity';
 
@@ -17,10 +18,13 @@ export class User extends BaseModel {
 
   email: string;
 
+  @ApiHideProperty()
   password: string;
 
+  @ApiHideProperty()
   resetPasswordToken: string;
 
+  @ApiHideProperty()
   resetPasswordExpiresAt: Date;
 
   createdAt: Date;
