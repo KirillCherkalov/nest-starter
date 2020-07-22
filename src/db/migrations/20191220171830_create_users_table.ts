@@ -9,6 +9,8 @@ export async function up(knex: Knex): Promise<void> {
     t.string('email').unique();
     t.string('username').unique();
     t.string('password');
+    t.string('resetPasswordToken').unique();
+    t.dateTime('resetPasswordExpiresAt');
     t.timestamps();
   });
 }

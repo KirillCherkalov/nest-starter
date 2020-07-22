@@ -10,6 +10,8 @@ import { Swagger } from './common/services/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const configServiceInstance = await app.resolve(ConfigService);
+
   app.setGlobalPrefix('/api/v1');
   const swagger = new Swagger(app);
 
@@ -18,9 +20,7 @@ async function bootstrap() {
   app.enableCors();
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new AllExceptionsFilter());
-
-  const configServiceInstance = await app.resolve(ConfigService);
+  app.useGlobalFilters(new AllExceptionsFilter(configServiceInstance));
 
   await app.listen(configServiceInstance.APP_PORT);
 }

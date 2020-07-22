@@ -8,7 +8,7 @@ import {
 
 import { passwordExp } from 'src/common/regex';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsEmail()
   readonly email: string;
 

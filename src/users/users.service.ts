@@ -7,6 +7,7 @@ import { User } from '../db/models/user.entity';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUserDto } from './dto/find.dto';
 import { FindUsersDto } from './dto/find-users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -31,7 +32,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, data: CreateUserDto): Promise<User> {
+  async update(id: number, data: UpdateUserDto): Promise<User> {
     const user = await this.userModel.query().patchAndFetchById(id, data);
 
     return user;

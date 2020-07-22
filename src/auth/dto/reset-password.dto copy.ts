@@ -2,22 +2,25 @@ import {
   IsString,
   IsEmail,
   Matches,
-  MinLength,
+  IsNotEmpty,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 
 import { passwordExp } from 'src/common/regex';
 
-export class CreateUserDto {
+export class ChangePasswordDto {
   @IsEmail()
   readonly email: string;
 
   @IsString()
-  readonly username: string;
+  @IsNotEmpty()
+  readonly oldPassword: string;
 
   @IsString()
+  @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)
   @Matches(passwordExp, { message: 'Password too weak' })
-  readonly password: string;
+  readonly newPassword: string;
 }

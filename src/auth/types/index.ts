@@ -1,3 +1,7 @@
 export interface AccessToken {
-  access_token: string;
+  accessToken: string;
+}
+
+export interface ResetToken {
+  resetPasswordToken: string;
 }

@@ -7,17 +7,20 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { Page } from 'src/common/types';
-
-import { User } from '../db/models/user.entity';
+import { User } from 'src/db/models/user.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUsersDto } from './dto/find-users.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -41,7 +44,7 @@ export class UsersController {
   @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: CreateUserDto,
+    @Body() body: UpdateUserDto,
   ): Promise<User> {
     return this.usersService.update(id, body);
   }
