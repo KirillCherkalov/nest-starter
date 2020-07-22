@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  Query,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
@@ -33,8 +34,8 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(@Body() body: FindUsersDto): Promise<Page<User>> {
-    return this.usersService.findAll(body);
+  async findAll(@Query() query: FindUsersDto): Promise<Page<User>> {
+    return this.usersService.findAll(query);
   }
 
   @Get(':id')
