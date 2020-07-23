@@ -1,6 +1,4 @@
-// need to discuss
-// import { Request } from '@nestjs/common';
-import { Request } from 'express';
+import { Request } from '@nestjs/common';
 
 import { User } from 'src/db/models/user.entity';
 
