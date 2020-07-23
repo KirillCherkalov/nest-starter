@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UniqueViolationError } from 'objection';
 
@@ -13,14 +14,15 @@ import { ConfigService } from 'src/config/services/config.service';
 interface errorResponse<T> {
   path: string;
   timestamp: string;
-  exception?: T;
+  exception?: unknown;
+  errors?: unknown;
 }
 
 @Catch()
 export class AllExceptionsFilter<T = any> implements ExceptionFilter {
   constructor(private readonly configService: ConfigService) {}
 
-  catch(exception: T, host: ArgumentsHost): void {
+  catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -43,7 +45,15 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       path: request.url,
     };
 
-    if (this.configService.NODE_ENV !== 'production') {
+    if (exception instanceof BadRequestException) {
+      responseObj.errors = exception.getResponse();
+    }
+
+    // do not show exception on production because it can include an sql query to the database
+    if (
+      this.configService.NODE_ENV !== 'production' &&
+      !(exception instanceof BadRequestException)
+    ) {
       responseObj.exception = exception;
     }
 
