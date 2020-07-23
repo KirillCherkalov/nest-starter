@@ -5,7 +5,6 @@ import {
   Matches,
   MinLength,
   MaxLength,
-  IsDateString,
 } from 'class-validator';
 
 import { passwordExp } from 'src/common/regex';
@@ -18,14 +17,6 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   readonly username?: string;
-
-  @IsString()
-  @IsOptional()
-  readonly resetPasswordToken?: string;
-
-  @IsDateString()
-  @IsOptional()
-  readonly resetPasswordExpiresAt?: Date;
 
   @IsString()
   @IsOptional()

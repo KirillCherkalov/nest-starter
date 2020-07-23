@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { Global, Module } from '@nestjs/common';
 import { knexSnakeCaseMappers, Model } from 'objection';
 import Knex from 'knex';
@@ -34,11 +36,26 @@ const providers = [
           max: 10,
         },
 
+        migrations: {
+          directory: path.join(__dirname, './migrations'),
+          stub: path.join(__dirname, './migration.stub'),
+          extension: 'ts',
+          loadExtensions: ['.js'],
+        },
+        seeds: {
+          directory: path.join(__dirname, './seeds'),
+          stub: path.join(__dirname, './seed.stub'),
+          extension: 'ts',
+        },
+
         debug: configService.isDevelopment(),
         ...knexSnakeCaseMappers(),
       });
 
       Model.knex(knex);
+
+      // You can uncomment this in case you need to run migrations on app startup
+      // await knex.migrate.latest();
 
       return knex;
     },

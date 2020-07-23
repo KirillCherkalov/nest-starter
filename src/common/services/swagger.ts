@@ -13,6 +13,7 @@ export class Swagger {
       .setTitle('{Project name} API')
       .setDescription('{Project name} API description')
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
 
     const document = SwaggerModule.createDocument(this.app, options);

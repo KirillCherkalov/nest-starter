@@ -1,5 +1,6 @@
 import helmet from 'helmet';
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation';
@@ -23,6 +24,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(configServiceInstance));
 
   await app.listen(configServiceInstance.APP_PORT);
+  Logger.log(`Listening on port ${configServiceInstance.APP_PORT}`, 'NestApplication');
 }
 
 bootstrap();
