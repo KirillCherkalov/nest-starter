@@ -3,13 +3,12 @@ import {
   UnauthorizedException,
   NotFoundException,
 } from '@nestjs/common';
-import bcrypt from 'bcrypt';
-import { add, compareAsc } from 'date-fns';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { EmailsService } from 'src/emails/emails.service';
+import { ConfigService } from 'src/config/services/config.service';
 
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
@@ -17,14 +16,13 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
 import { ResetToken, AccessToken } from './types';
 
-const SALT_ROUNDS = 12;
-
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
     private readonly emailsService: EmailsService,
+    private readonly configService: ConfigService,
   ) {}
 
   async validate(email: string, password: string): Promise<User | never> {
@@ -67,26 +65,18 @@ export class AuthService {
       );
     }
 
-    const resetPasswordToken = await bcrypt.hash(
-      forgotPasswordDto.email,
-      SALT_ROUNDS,
-    );
-    const resetPasswordExpiresAt = add(new Date(), { days: 1 });
-
-    await this.usersService.update(user.id, {
-      resetPasswordExpiresAt,
-      resetPasswordToken,
-    });
+    await user.generatePasswordResetToken();
+    await user.$query().patch();
 
     return this.emailsService.sendMail({
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Hello ',
-      html: `resetPasswordToken=${resetPasswordToken}`,
+      html: `${this.configService.BASE_FRONTEND_URL}/reset?token=${user.resetPasswordToken}`,
     });
   }
 
-  async resetPasswordConfirm(
+  async resetPassword(
     query: ResetToken,
     resetPasswordConfirmDto: ResetPasswordConfirmDto,
   ): Promise<User | never> {
@@ -100,35 +90,17 @@ export class AuthService {
       );
     }
 
-    if (compareAsc(new Date(), user.resetPasswordExpiresAt) !== -1) {
+    if (!user.isPasswordResetTokenValid()) {
       throw new UnauthorizedException('Password reset token has expired.');
     }
 
-    const updatableUser = this.usersService.update(user.id, {
+    await user.$query().patch({
       password,
       resetPasswordExpiresAt: null,
       resetPasswordToken: null,
     });
 
-    return updatableUser;
-  }
-
-  async checkResetToken(
-    changePasswordDto: ChangePasswordDto,
-  ): Promise<User | never> {
-    const { email, oldPassword, newPassword } = changePasswordDto;
-
-    const user = await this.validate(email, oldPassword);
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const updatableUser = this.usersService.update(user.id, {
-      password: newPassword,
-    });
-
-    return updatableUser;
+    return user;
   }
 
   async changePassword(
@@ -142,10 +114,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const updatableUser = this.usersService.update(user.id, {
-      password: newPassword,
-    });
+    await user.$query().patch({ password: newPassword });
 
-    return updatableUser;
+    return user;
   }
 }

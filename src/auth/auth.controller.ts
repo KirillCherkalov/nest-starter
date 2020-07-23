@@ -6,14 +6,16 @@ import {
   UseGuards,
   Body,
   Query,
+  Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 import { RequestContext } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LoginDto } from './dto/login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -27,6 +29,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
+  @ApiBody({ type: LoginDto })
   @Post('login')
   login(@Request() req: RequestContext): Promise<AccessToken> {
     return this.authService.login(req.user);
@@ -38,25 +41,27 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('change-password')
+  @Put('password')
   changePassword(@Body() body: ChangePasswordDto): Promise<User> {
     return this.authService.changePassword(body);
   }
 
-  @Post('reset-password-confirm')
+  @Post('password/reset')
+  @ApiQuery({ name: 'resetPasswordToken', description: 'Reset password token' })
   resetPasswordConfirm(
     @Query() query: ResetToken,
     @Body() body: ResetPasswordConfirmDto,
   ): Promise<User> {
-    return this.authService.resetPasswordConfirm(query, body);
+    return this.authService.resetPassword(query, body);
   }
 
-  @Post('forgot')
+  @Post('password/forgot')
   forgotPassword(@Body() body: ForgotPasswordDto): Promise<string | false> {
     return this.authService.forgotPassword(body);
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('profile')
   profile(@Request() req: RequestContext): User {
     return req.user;
