@@ -72,7 +72,7 @@ export class AuthService {
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Hello ',
-      html: `${this.configService.BASE_FRONTEND_URL}/reset?token=${user.resetPasswordToken}`,
+      html: `${this.configService.BASE_FRONTEND_URL}?token=${user.resetPasswordToken}`,
     });
   }
 
