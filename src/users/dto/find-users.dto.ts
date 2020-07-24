@@ -44,9 +44,5 @@ export class FindUsersDto implements PageOptions {
 
   @IsString()
   @IsOptional()
-  email?: string;
-
-  @IsString()
-  @IsOptional()
-  username?: string;
+  search?: string;
 }

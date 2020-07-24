@@ -14,15 +14,7 @@ export class UsersService {
   constructor(@Inject('User') private userModel: typeof User) {}
 
   async findAll(findUserDto: FindUsersDto): Promise<Page<User>> {
-    const {
-      page,
-      pageSize,
-      column,
-      order,
-      columns,
-      email,
-      username,
-    } = findUserDto;
+    const { page, pageSize, column, order, columns, search } = findUserDto;
     const query = this.userModel.query().page(page, pageSize);
 
     if (column && order) {
@@ -33,12 +25,10 @@ export class UsersService {
       query.orderBy(columns);
     }
 
-    if (email) {
-      query.andWhere('email', 'like', `%${email}%`);
-    }
-
-    if (username) {
-      query.andWhere('username', 'like', `%${username}%`);
+    if (search) {
+      query
+        .andWhere('username', 'like', `%${search}%`)
+        .orWhere('email', 'like', `%${search}%`);
     }
 
     const users = await query;
