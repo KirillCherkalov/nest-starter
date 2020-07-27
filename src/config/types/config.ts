@@ -8,4 +8,5 @@ export interface Config {
   APP_PORT: number;
   JWT_SECRET: string;
   BASE_FRONTEND_URL: string;
+  JWT_EXPIRES_IN: string;
 }
