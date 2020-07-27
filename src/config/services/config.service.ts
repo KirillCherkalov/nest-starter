@@ -52,6 +52,10 @@ export class ConfigService {
     return this.config.BASE_FRONTEND_URL;
   }
 
+  get JWT_EXPIRES_IN(): string {
+    return this.config.JWT_EXPIRES_IN;
+  }
+
   isDevelopment(): boolean {
     return this.NODE_ENV === 'development';
   }

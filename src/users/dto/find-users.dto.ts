@@ -1,5 +1,4 @@
 import {
-  IsNumber,
   IsOptional,
   IsInt,
   Min,
@@ -7,6 +6,7 @@ import {
   IsIn,
   IsArray,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import {
   OrderByDirection,
   ColumnRef,
@@ -16,16 +16,16 @@ import {
 import { PageOptions } from 'src/common/types';
 
 export class FindUsersDto implements PageOptions {
-  @IsNumber()
   @IsInt()
   @Min(0)
   @IsOptional()
+  @Transform(page => parseInt(page), { toClassOnly: true })
   page?: number;
 
-  @IsNumber()
   @IsInt()
   @Min(0)
   @IsOptional()
+  @Transform(pageSize => parseInt(pageSize), { toClassOnly: true })
   pageSize?: number;
 
   @IsString()

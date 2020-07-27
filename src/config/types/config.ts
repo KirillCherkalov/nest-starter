@@ -9,4 +9,5 @@ export interface Config {
   JWT_SECRET: string;
   JWT_REFRESH_SECRET: string;
   BASE_FRONTEND_URL: string;
+  JWT_EXPIRES_IN: string;
 }
