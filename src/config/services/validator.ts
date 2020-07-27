@@ -14,7 +14,8 @@ const schema = Joi.object({
   APP_PORT: Joi.number().integer().required(),
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
-  JWT_REFRESH_SECRET: Joi.string().required(),
+  JWT_REFRESH: Joi.string().required(),
+  JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
   BASE_FRONTEND_URL: Joi.string().required(),
 });
 

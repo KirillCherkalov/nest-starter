@@ -10,12 +10,13 @@ import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { EmailsService } from 'src/emails/emails.service';
 import { ConfigService } from 'src/config/services/config.service';
+import { DecodedUser } from 'src/common/types';
 
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken, LoginResponse, DecodedUser } from './types';
+import { ResetToken, LoginResponse } from './types';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
@@ -44,7 +45,7 @@ export class AuthService {
   async refreshToken(refreshTokenDto: RefreshTokenDto): Promise<LoginResponse> {
     const decodedUser = jwt.verify(
       refreshTokenDto.refreshToken,
-      this.configService.JWT_REFRESH_SECRET,
+      this.configService.JWT_REFRESH,
     ) as DecodedUser;
 
     delete decodedUser.sub;
@@ -56,19 +57,16 @@ export class AuthService {
     return this.login(user);
   }
 
+  private generateRefreshToken(user: User) {
+    return jwt.sign(user, this.configService.JWT_REFRESH, {
+      expiresIn: this.configService.JWT_REFRESH_EXPIRES_IN,
+    });
+  }
+
   async login(user: User): Promise<LoginResponse> {
-    const { id, ...data } = user;
-    const payload = { ...data, sub: id };
-
-    const refreshToken = jwt.sign(
-      payload,
-      this.configService.JWT_REFRESH_SECRET,
-      { expiresIn: '1m' },
-    );
-
     return {
-      accessToken: this.jwtService.sign(payload),
-      refreshToken,
+      accessToken: this.jwtService.sign(user),
+      refreshToken: this.generateRefreshToken(user),
     };
   }
 
