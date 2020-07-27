@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import jwt from 'jsonwebtoken';
 
 import { User } from 'src/db/models/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -14,7 +15,8 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken, AccessToken } from './types';
+import { ResetToken, LoginResponse, DecodedUser } from './types';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -39,12 +41,34 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<AccessToken> {
-    const { id, ...data } = user.toJSON();
+  async refreshToken(refreshTokenDto: RefreshTokenDto): Promise<LoginResponse> {
+    const decodedUser = jwt.verify(
+      refreshTokenDto.refreshToken,
+      this.configService.JWT_REFRESH_SECRET,
+    ) as DecodedUser;
+
+    delete decodedUser.sub;
+    delete decodedUser.iat;
+    delete decodedUser.exp;
+
+    const user = decodedUser;
+
+    return this.login(user);
+  }
+
+  async login(user: User): Promise<LoginResponse> {
+    const { id, ...data } = user;
     const payload = { ...data, sub: id };
+
+    const refreshToken = jwt.sign(
+      payload,
+      this.configService.JWT_REFRESH_SECRET,
+      { expiresIn: '1m' },
+    );
 
     return {
       accessToken: this.jwtService.sign(payload),
+      refreshToken,
     };
   }
 

@@ -44,6 +44,10 @@ export class ConfigService {
     return this.config.JWT_SECRET;
   }
 
+  get JWT_REFRESH_SECRET(): string {
+    return this.config.JWT_REFRESH_SECRET;
+  }
+
   get BASE_FRONTEND_URL(): string {
     return this.config.BASE_FRONTEND_URL;
   }

@@ -7,5 +7,6 @@ export interface Config {
   DB_PASSWORD: string;
   APP_PORT: number;
   JWT_SECRET: string;
+  JWT_REFRESH_SECRET: string;
   BASE_FRONTEND_URL: string;
 }

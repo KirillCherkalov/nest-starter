@@ -8,6 +8,11 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { UniqueViolationError } from 'objection';
+import {
+  TokenExpiredError,
+  JsonWebTokenError,
+  NotBeforeError,
+} from 'jsonwebtoken';
 
 import { ConfigService } from 'src/config/services/config.service';
 
@@ -36,8 +41,19 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       status = HttpStatus.CONFLICT;
     }
 
-    if (exception instanceof UnauthorizedException) {
+    if (
+      exception instanceof UnauthorizedException ||
+      exception instanceof TokenExpiredError
+    ) {
       status = HttpStatus.UNAUTHORIZED;
+    }
+
+    if (exception instanceof JsonWebTokenError) {
+      status = HttpStatus.BAD_REQUEST;
+    }
+
+    if (exception instanceof NotBeforeError) {
+      status = HttpStatus.BAD_REQUEST;
     }
 
     const responseObj: errorResponse<T> = {

@@ -13,6 +13,7 @@ const schema = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   APP_PORT: Joi.number().integer().required(),
   JWT_SECRET: Joi.string().required(),
+  JWT_REFRESH_SECRET: Joi.string().required(),
   BASE_FRONTEND_URL: Joi.string().required(),
 });
 
