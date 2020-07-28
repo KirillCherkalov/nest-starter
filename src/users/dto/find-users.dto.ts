@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
   IsInt,
@@ -28,10 +29,12 @@ export class FindUsersDto implements PageOptions {
   @Transform(pageSize => parseInt(pageSize), { toClassOnly: true })
   pageSize?: number;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsOptional()
   column?: ColumnRef;
 
+  @ApiProperty({ enum: ['asc', 'desc', 'ASC', 'DESC']})
   @IsString()
   @IsOptional()
   @IsIn(['asc', 'desc', 'ASC', 'DESC'])
