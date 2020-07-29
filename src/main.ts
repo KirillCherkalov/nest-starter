@@ -24,7 +24,10 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(configServiceInstance));
 
   await app.listen(configServiceInstance.APP_PORT);
-  Logger.log(`Listening on port ${configServiceInstance.APP_PORT}`, 'NestApplication');
+  Logger.log(
+    `Listening on port ${configServiceInstance.APP_PORT}`,
+    'NestApplication',
+  );
 }
 
 bootstrap();
