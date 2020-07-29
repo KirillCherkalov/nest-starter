@@ -18,7 +18,7 @@ export class EmailsService {
 
   constructor(
     @Inject('TEST_ACCOUNT') testAccount: TestAccount,
-    private readonly configService: ConfigService, // private templates: Record<string, string>,
+    private readonly configService: ConfigService,
   ) {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
