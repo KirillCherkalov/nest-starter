@@ -72,7 +72,10 @@ export class AuthService {
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Hello ',
-      html: `${this.configService.BASE_FRONTEND_URL}?token=${user.resetPasswordToken}`,
+      templateId: 'forgot-password',
+      data: {
+        link: `${this.configService.BASE_FRONTEND_URL}?token=${user.resetPasswordToken}`,
+      },
     });
   }
 
