@@ -12,6 +12,7 @@ import { ApiTags, ApiBody, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 import { RequestContext } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
+import { GetUser } from 'src/common/decorators/user.decorator';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -20,8 +21,9 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken, AccessToken } from './types';
+import { ResetToken, LoginResponse } from './types';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -31,8 +33,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: LoginDto })
   @Post('login')
-  login(@Request() req: RequestContext): Promise<AccessToken> {
-    return this.authService.login(req.user);
+  login(@GetUser() user: User): Promise<LoginResponse> {
+    return this.authService.login(user);
   }
 
   @Post('registration')
@@ -65,5 +67,10 @@ export class AuthController {
   @Get('profile')
   profile(@Request() req: RequestContext): User {
     return req.user;
+  }
+
+  @Post('token/refresh')
+  refreshToken(@Body() body: RefreshTokenDto): Promise<LoginResponse> {
+    return this.authService.refreshToken(body);
   }
 }

@@ -15,3 +15,9 @@ export interface Page<T> {
   total: number;
   results: T[];
 }
+
+export interface DecodedUser extends User {
+  exp: number;
+  iat: number;
+  sub: number;
+}
