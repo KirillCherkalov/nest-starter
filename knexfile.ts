@@ -3,7 +3,8 @@ import * as Knex from 'knex';
 import { knexSnakeCaseMappers } from 'objection';
 
 module.exports = {
-  client: 'mysql',
+  client: 'pg',
+  // client: 'mysql',
   connection: {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
