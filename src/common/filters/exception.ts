@@ -22,7 +22,7 @@ interface errorResponse<T> {
 export class AllExceptionsFilter<T = any> implements ExceptionFilter {
   constructor(private readonly configService: ConfigService) {}
 
-  catch(exception: any, host: ArgumentsHost): void {
+  catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -54,7 +54,7 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       this.configService.NODE_ENV !== 'production' &&
       !(exception instanceof BadRequestException)
     ) {
-      responseObj.exception = exception.stack;
+      responseObj.exception = exception;
     }
 
     response.status(status).json(responseObj);

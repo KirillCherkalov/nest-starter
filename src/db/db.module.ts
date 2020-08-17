@@ -23,7 +23,6 @@ const providers = [
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const knex = Knex({
-        // client: 'mysql',
         client: 'pg',
         connection: {
           host: configService.DB_HOST,
