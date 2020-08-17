@@ -67,6 +67,7 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(user),
       refreshToken: this.generateRefreshToken(user),
+      user,
     };
   }
 
