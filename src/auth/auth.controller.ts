@@ -18,7 +18,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { ChangePasswordDto } from './dto/reset-password.dto copy';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
 import { ResetToken, LoginResponse } from './types';

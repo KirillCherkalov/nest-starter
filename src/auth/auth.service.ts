@@ -12,8 +12,8 @@ import { EmailsService } from 'src/emails/emails.service';
 import { ConfigService } from 'src/config/services/config.service';
 import { DecodedUser } from 'src/common/types';
 
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { ChangePasswordDto } from './dto/reset-password.dto copy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
 import { ResetToken, LoginResponse } from './types';
