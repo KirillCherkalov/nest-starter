@@ -13,11 +13,11 @@ import { ApiTags, ApiBody, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { RequestContext } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
 import { GetUser } from 'src/common/decorators/user.decorator';
+import { RegisterUserDto } from 'src/common/dto/register-user.dto';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginDto } from './dto/login.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';

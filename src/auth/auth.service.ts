@@ -11,9 +11,9 @@ import { UsersService } from 'src/users/users.service';
 import { EmailsService } from 'src/emails/emails.service';
 import { ConfigService } from 'src/config/services/config.service';
 import { DecodedUser } from 'src/common/types';
+import { RegisterUserDto } from 'src/common/dto/register-user.dto';
 
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
 import { ResetToken, LoginResponse } from './types';
@@ -27,6 +27,16 @@ export class AuthService {
     private readonly emailsService: EmailsService,
     private readonly configService: ConfigService,
   ) {}
+
+  private getDecodeUser(token: string, secretOrPublicKey: string): User {
+    const decodedUser = jwt.verify(token, secretOrPublicKey) as DecodedUser;
+
+    delete decodedUser.sub;
+    delete decodedUser.iat;
+    delete decodedUser.exp;
+
+    return decodedUser;
+  }
 
   async validate(email: string, password: string): Promise<User | never> {
     const user = await this.usersService.findOne({ email });
@@ -43,16 +53,10 @@ export class AuthService {
   }
 
   async refreshToken(refreshTokenDto: RefreshTokenDto): Promise<LoginResponse> {
-    const decodedUser = jwt.verify(
+    const user = this.getDecodeUser(
       refreshTokenDto.refreshToken,
       this.configService.JWT_REFRESH,
-    ) as DecodedUser;
-
-    delete decodedUser.sub;
-    delete decodedUser.iat;
-    delete decodedUser.exp;
-
-    const user = decodedUser;
+    );
 
     return this.login(user);
   }
@@ -72,7 +76,7 @@ export class AuthService {
   }
 
   async register(registerUserDto: RegisterUserDto): Promise<User> {
-    const user = await this.usersService.create(registerUserDto);
+    const user = await this.usersService.register(registerUserDto);
 
     return user;
   }

@@ -33,6 +33,11 @@ export class User extends BaseModel {
 
   public async $beforeInsert(ctx: QueryContext): Promise<void> {
     await super.$beforeInsert(ctx);
+
+    if (this.password === undefined) {
+      return;
+    }
+
     await this.generateHash();
   }
 
