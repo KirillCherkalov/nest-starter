@@ -19,5 +19,4 @@ export interface Page<T> {
 export interface DecodedUser extends User {
   exp: number;
   iat: number;
-  sub: number;
 }

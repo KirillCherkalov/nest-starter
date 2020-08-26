@@ -31,7 +31,6 @@ export class AuthService {
   private getDecodeUser(token: string, secretOrPublicKey: string): User {
     const decodedUser = jwt.verify(token, secretOrPublicKey) as DecodedUser;
 
-    delete decodedUser.sub;
     delete decodedUser.iat;
     delete decodedUser.exp;
 
