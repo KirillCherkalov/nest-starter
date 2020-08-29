@@ -80,9 +80,7 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(
-    forgotPasswordDto: ForgotPasswordDto,
-  ): Promise<string | false> {
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<User> {
     const user = await this.usersService.findOne(forgotPasswordDto);
 
     if (!user) {
@@ -94,7 +92,7 @@ export class AuthService {
     await user.generatePasswordResetToken();
     await user.$query().patch();
 
-    return this.emailsService.sendMail({
+    this.emailsService.sendMail({
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Hello ',
@@ -103,6 +101,8 @@ export class AuthService {
         link: `${this.configService.BASE_FRONTEND_URL}?token=${user.resetPasswordToken}`,
       },
     });
+
+    return user;
   }
 
   async resetPassword(
