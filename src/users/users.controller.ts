@@ -29,7 +29,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() body: CreateUserDto): Promise<User> {
+  async create(@Body() body: CreateUserDto): Promise<string | false> {
     return this.usersService.create(body);
   }
 

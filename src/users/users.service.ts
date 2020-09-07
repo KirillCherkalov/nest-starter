@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { Page } from 'src/common/types';
+import { EmailsService } from 'src/emails/emails.service';
+import { ConfigService } from 'src/config/services/config.service';
+import { RegisterUserDto } from 'src/common/dto/register-user.dto';
 
 import { User } from '../db/models/user.entity';
 
@@ -11,7 +14,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('User') private userModel: typeof User) {}
+  constructor(
+    @Inject('User') private userModel: typeof User,
+    private readonly emailsService: EmailsService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async findAll(findUserDto: FindUsersDto): Promise<Page<User>> {
     const { page, pageSize, column, order, columns, search } = findUserDto;
@@ -42,10 +49,28 @@ export class UsersService {
     return user;
   }
 
-  async create(data: CreateUserDto): Promise<User> {
-    const user = await this.userModel.query().insert(data);
+  async register(registerUserDto: RegisterUserDto): Promise<User> {
+    const user = await this.userModel.query().insert(registerUserDto);
 
     return user;
+  }
+
+  async create(data: CreateUserDto): Promise<string | false> {
+    const user = await this.userModel.query().insert(data);
+
+    await user.generatePasswordResetToken();
+    await user.$query().patch();
+
+    return this.emailsService.sendMail({
+      from: 'effective-soft@team.com',
+      to: user.email,
+      subject: 'Password set up',
+      templateId: 'set-up-password',
+      data: {
+        username: user.username,
+        link: `${this.configService.BASE_FRONTEND_URL}/set-up-password?token=${user.resetPasswordToken}`,
+      },
+    });
   }
 
   async update(id: number, data: UpdateUserDto): Promise<User> {
