@@ -16,8 +16,9 @@ import { RegisterUserDto } from 'src/common/dto/register-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken, LoginResponse } from './types';
+import { ResetToken } from './types';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { LoginResponse } from './dto/login-response.dto';
 
 @Injectable()
 export class AuthService {
