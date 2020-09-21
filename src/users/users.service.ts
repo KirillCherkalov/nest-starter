@@ -55,13 +55,13 @@ export class UsersService {
     return user;
   }
 
-  async create(data: CreateUserDto): Promise<string | false> {
+  async create(data: CreateUserDto): Promise<User> {
     const user = await this.userModel.query().insert(data);
 
     await user.generatePasswordResetToken();
     await user.$query().patch();
 
-    return this.emailsService.sendMail({
+    this.emailsService.sendMail({
       from: 'effective-soft@team.com',
       to: user.email,
       subject: 'Password set up',
@@ -71,6 +71,8 @@ export class UsersService {
         link: `${this.configService.BASE_FRONTEND_URL}/set-up-password?token=${user.resetPasswordToken}`,
       },
     });
+
+    return user;
   }
 
   async update(id: number, data: UpdateUserDto): Promise<User> {
