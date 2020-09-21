@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Page } from 'src/common/types';
 import { EmailsService } from 'src/emails/emails.service';
 import { ConfigService } from 'src/config/services/config.service';
 import { RegisterUserDto } from 'src/common/dto/register-user.dto';
@@ -11,6 +10,7 @@ import { CreateUserDto } from './dto/create.dto';
 import { FindUserDto } from './dto/find.dto';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersResponse } from './dto/page-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +20,7 @@ export class UsersService {
     private readonly configService: ConfigService,
   ) {}
 
-  async findAll(findUserDto: FindUsersDto): Promise<Page<User>> {
+  async findAll(findUserDto: FindUsersDto): Promise<UsersResponse> {
     const { page, pageSize, column, order, columns, search } = findUserDto;
     const query = this.userModel.query().page(page, pageSize);
 
