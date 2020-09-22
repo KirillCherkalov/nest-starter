@@ -10,7 +10,7 @@ import { CreateUserDto } from './dto/create.dto';
 import { FindUserDto } from './dto/find.dto';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersResponse } from './dto/page-response.dto';
+import { UsersResponse } from './dto/users-response.dto';
 
 @Injectable()
 export class UsersService {

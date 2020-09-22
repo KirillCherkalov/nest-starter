@@ -19,7 +19,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersResponse } from './dto/page-response.dto';
+import { UsersResponse } from './dto/users-response.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Users')
