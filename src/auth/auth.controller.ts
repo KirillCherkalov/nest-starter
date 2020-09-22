@@ -21,9 +21,10 @@ import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordConfirmDto } from './dto/reset-password-confirm.dto';
-import { ResetToken, LoginResponse } from './types';
+import { ResetToken } from './types';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { LoginResponse } from './dto/login-response.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')

@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
-import { Page } from 'src/common/types';
 import { User } from 'src/db/models/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
@@ -20,6 +19,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.dto';
 import { FindUsersDto } from './dto/find-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersResponse } from './dto/users-response.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Users')
@@ -29,12 +29,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() body: CreateUserDto): Promise<string | false> {
+  async create(@Body() body: CreateUserDto): Promise<User> {
     return this.usersService.create(body);
   }
 
   @Get()
-  async findAll(@Query() query: FindUsersDto): Promise<Page<User>> {
+  async findAll(@Query() query: FindUsersDto): Promise<UsersResponse> {
     return this.usersService.findAll(query);
   }
 
