@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  server:
+    image: node:12.16-alpine
+    command: sh -c "yarn && yarn knex migrate:latest && yarn start:debug"
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+      - 9229:9229
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - nest-starter-network
+  db:
+    image: postgres
+    container_name: my_postgres_01
+    networks:
+      - nest-starter-network
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+volumes:
+  pgdata:
+networks:
+  nest-starter-network:
