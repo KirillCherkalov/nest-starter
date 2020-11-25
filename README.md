@@ -29,3 +29,11 @@ To add/edit env variables u should update code into these files:
 - config.service.ts
 - validator.ts
 - config.ts
+
+## Monitoring services
+
+If you need additional monitoring of the application, you can consider such libraries as:
+
+- [Appmetrics](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/34/overview)
+- [Prometheus](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/33/overview)
+- [@nestjs/terminus](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/32/overview)
