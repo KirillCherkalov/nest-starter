@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Debug: Nest Framework 2",
+      "name": "Debug: Nest Framework",
       "remoteRoot": "/usr/src/app",
       "localRoot": "${workspaceFolder}",
       "protocol": "inspector",
