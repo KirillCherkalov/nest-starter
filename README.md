@@ -8,34 +8,32 @@
 
 Effective Soft Node.js TypeScript starter app based on [Nest](https://github.com/nestjs/nest) framework.
 
-## Installation
+## Building the image
 
 ```bash
-$ yarn
+$  docker build -t nest-starter .
 ```
-
 ## Running the app
 
 ```bash
-# development
-$ yarn start
-
-# watch mode
-$ yarn start:dev
-
-# production mode
-$ yarn start:prod
+# watch & debug mode
+$ docker-compose up -d
 ```
 
-## Test
+## Hint for adding new env variables
 
-```bash
-# unit tests
-$ yarn test
+To add/edit env variables u should update code into these files:
 
-# e2e tests
-$ yarn test:e2e
+- .env
+- .env.example
+- config.service.ts
+- validator.ts
+- config.ts
 
-# test coverage
-$ yarn test:cov
-```
+## Monitoring services
+
+If you need additional monitoring of the application, you can consider such libraries as:
+
+- [Appmetrics](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/34/overview)
+- [Prometheus](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/33/overview)
+- [@nestjs/terminus](https://bitbucket.effective-soft.com/projects/ES617/repos/nest-starter/pull-requests/32/overview)
