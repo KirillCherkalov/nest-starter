@@ -5,4 +5,3 @@ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
 npm -v
 npm install pm2@latest -g
-npm i -g @nestjs/cli
