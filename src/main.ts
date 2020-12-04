@@ -6,7 +6,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation';
 import { AllExceptionsFilter } from './common/filters/exception';
 import { ConfigService } from './config/services/config.service';
-import { Swagger } from './common/services/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,9 +13,6 @@ async function bootstrap() {
   const configServiceInstance = await app.resolve(ConfigService);
 
   app.setGlobalPrefix('/api/v1');
-  const swagger = new Swagger(app);
-
-  swagger.init();
 
   app.enableCors();
   app.use(helmet());
