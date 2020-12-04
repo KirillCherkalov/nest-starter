@@ -16,7 +16,7 @@ import {
 
 import { ConfigService } from 'src/config/services/config.service';
 
-interface errorResponse<T> {
+interface errorResponse {
   path: string;
   timestamp: string;
   exception?: unknown;
@@ -24,7 +24,7 @@ interface errorResponse<T> {
 }
 
 @Catch()
-export class AllExceptionsFilter<T = any> implements ExceptionFilter {
+export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly configService: ConfigService) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
@@ -56,7 +56,7 @@ export class AllExceptionsFilter<T = any> implements ExceptionFilter {
       status = HttpStatus.BAD_REQUEST;
     }
 
-    const responseObj: errorResponse<T> = {
+    const responseObj: errorResponse = {
       timestamp: new Date().toISOString(),
       path: request.url,
     };

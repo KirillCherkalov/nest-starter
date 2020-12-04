@@ -23,7 +23,7 @@ const providers = [
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const knex = Knex({
-        client: 'pg',
+        client: 'mysql',
         connection: {
           host: configService.DB_HOST,
           port: configService.DB_PORT,
@@ -55,7 +55,7 @@ const providers = [
       Model.knex(knex);
 
       // You can uncomment this in case you need to run migrations on app startup
-      // await knex.migrate.latest();
+      await knex.migrate.latest();
 
       return knex;
     },
