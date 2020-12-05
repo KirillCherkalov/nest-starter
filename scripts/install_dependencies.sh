@@ -8,7 +8,7 @@ npm install pm2@latest -g
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
-sudo apt-get install jq
+sudo apt-get install jq -y
 
 
 environmentVariables=$(aws ssm get-parameters-by-path --path /nest-server/development --query "Parameters[*].{Name:Name,Value:Value}")
