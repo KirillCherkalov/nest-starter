@@ -1,6 +1,6 @@
 #!/bin/bash
 
-environmentVariables=$(aws ssm get-parameters-by-path --path /nest-server/development --query "Parameters[*].{Name:Name,Value:Value}")
+environmentVariables=$(aws ssm get-parameters-by-path --path /nest-server/development --with-decryption --query "Parameters[*].{Name:Name,Value:Value}")
 
 #remove temp file for storing json if it exist
 [ -e env.json ] && rm env.json
@@ -16,7 +16,7 @@ jq -c '.[]' env.json | while read i; do
     echo $varName
     echo $varValue
 
-    echo $varName=$varValue>> /var/www/nest-starter/.env
+    echo $varName=$varValue>> /var/www/nest-starter/dist/src/.env
 done
 
 rm env.json
