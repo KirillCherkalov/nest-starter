@@ -27,7 +27,7 @@ jq -c '.[]' env.json | while read i; do
     echo $varName
     echo $varValue
 
-    echo $varName=$varValue>> /var/www/nest-starter/.env
+    echo $varName=$varValue>> /var/www/nest-starter/dist/src/.env
 done
 
 rm env.json
