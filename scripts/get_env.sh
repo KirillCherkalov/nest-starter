@@ -4,6 +4,7 @@ environmentVariables=$(aws ssm get-parameters-by-path --path /nest-server/develo
 
 #remove temp file for storing json if it exist
 [ -e env.json ] && rm env.json
+[ -e /var/www/nest-starter/dist/src/.env ] && rm /var/www/nest-starter/dist/src/.env
 
 echo $environmentVariables >> env.json
 
